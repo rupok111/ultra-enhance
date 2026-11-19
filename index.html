@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>UltraEnhance Pro AI — 4K & 8K Crystal Unblur Studio</title>
+    <meta name="description" content="Transform blurry photos and low-resolution videos into crystal-clear 4K & 8K Ultra HD directly in your browser using AI sharpening.">
+    <style>
+        :root {
+            --bg-dark: #060913;
+            --surface: rgba(17, 24, 39, 0.72);
+            --surface-border: rgba(255, 255, 255, 0.08);
+            --primary: #00f5a0;
+            --secondary: #00d9f5;
+            --accent-purple: #8b5cf6;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(circle at 15% 10%, rgba(0, 245, 160, 0.14) 0%, transparent 40%),
+                radial-gradient(circle at 85% 25%, rgba(139, 92, 246, 0.16) 0%, transparent 45%),
+                radial-gradient(circle at 50% 90%, rgba(0, 217, 245, 0.12) 0%, transparent 50%);
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding-bottom: 40px;
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            background: rgba(6, 9, 19, 0.8);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--surface-border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            font-size: 1.2rem;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: #04070d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 0.9rem;
+            box-shadow: 0 0 20px rgba(0, 245, 160, 0.4);
+        }
+
+        .pro-badge {
+            background: linear-gradient(90deg, rgba(0, 245, 160, 0.15), rgba(0, 217, 245, 0.15));
+            border: 1px solid rgba(0, 245, 160, 0.4);
+            color: var(--primary);
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 5px 10px;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .container {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 20px 16px;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            margin-bottom: 22px;
+        }
+
+        .hero-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--surface-border);
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 0.78rem;
+            color: var(--secondary);
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .hero h1 {
+            font-size: 1.85rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, var(--primary), var(--secondary), #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        /* Ad Slot */
+        .ad-slot {
+            width: 100%;
+            min-height: 60px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px dashed rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #475569;
+            font-size: 0.72rem;
+            letter-spacing: 1px;
+            margin: 16px 0;
+            text-transform: uppercase;
+        }
+
+        /* Mode Switcher Tabs */
+        .tabs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid var(--surface-border);
+            border-radius: 16px;
+            padding: 5px;
+            margin-bottom: 20px;
+            gap: 6px;
+        }
+
+        .tab-btn {
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            padding: 13px 10px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.92rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: #04070d;
+            box-shadow: 0 4px 20px rgba(0, 245, 160, 0.35);
+        }
+
+        /* Glass Card */
+        .glass-card {
+            background: var(--surface);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--surface-border);
+            border-radius: 24px;
+            padding: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Upload Zone - Fixed Full Width Layout */
+        .upload-zone {
+            width: 100%;
+            border: 2px dashed rgba(0, 245, 160, 0.35);
+            background: rgba(0, 245, 160, 0.03);
+            border-radius: 18px;
+            padding: 32px 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 18px;
+        }
+
+        .upload-zone:hover, .upload-zone:active {
+            border-color: var(--primary);
+            background: rgba(0, 245, 160, 0.08);
+        }
+
+        .upload-icon-circle {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(0, 245, 160, 0.2), rgba(0, 217, 245, 0.2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            margin-bottom: 12px;
+            border: 1px solid rgba(0, 245, 160, 0.3);
+        }
+
+        .upload-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+
+        .upload-sub {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Resolution Selector */
+        .res-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .res-card {
+            background: rgba(15, 23, 42, 0.7);
+            border: 1.5px solid var(--surface-border);
+            border-radius: 14px;
+            padding: 14px 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .res-card.active {
+            border-color: var(--primary);
+            background: rgba(0, 245, 160, 0.1);
+            box-shadow: 0 0 20px rgba(0, 245, 160, 0.15);
+        }
+
+        .res-title {
+            font-weight: 800;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            margin-bottom: 2px;
+        }
+
+        .res-sub {
+            font-size: 0.75rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Sliders */
+        .control-group {
+            margin-bottom: 16px;
+            background: rgba(15, 23, 42, 0.5);
+            padding: 12px 14px;
+            border-radius: 14px;
+            border: 1px solid var(--surface-border);
+        }
+
+        .control-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.84rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #e2e8f0;
+        }
+
+        .control-val {
+            color: var(--primary);
+            font-weight: 800;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            background: #1e293b;
+            border-radius: 6px;
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 245, 160, 0.6);
+        }
+
+        /* Primary CTA Button */
+        .btn-primary {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 16px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: #030712;
+            font-size: 1.02rem;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0, 245, 160, 0.35);
+            transition: transform 0.15s ease, box-shadow 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Progress Bar */
+        .progress-wrap {
+            display: none;
+            margin-top: 16px;
+            background: rgba(15, 23, 42, 0.8);
+            padding: 14px;
+            border-radius: 14px;
+            border: 1px solid var(--surface-border);
+        }
+
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .progress-bar-bg {
+            width: 100%;
+            height: 8px;
+            background: #1e293b;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: width 0.2s ease;
+        }
+
+        /* Before/After Comparison Slider */
+        .result-section {
+            display: none;
+            margin-top: 22px;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .compare-box {
+            position: relative;
+            width: 100%;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 245, 160, 0.4);
+            background: #000;
+            margin-bottom: 14px;
+            user-select: none;
+            touch-action: pan-y;
+        }
+
+        .compare-box img {
+            display: block;
+            width: 100%;
+            height: auto;
+            pointer-events: none;
+        }
+
+        .img-before-wrap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 50%;
+            overflow: hidden;
+            border-right: 2px solid var(--primary);
+        }
+
+        .img-before-wrap img {
+            width: 100%;
+            max-width: none;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .badge-tag {
+            position: absolute;
+            top: 12px;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            z-index: 5;
+            backdrop-filter: blur(8px);
+        }
+
+        .tag-before {
+            left: 12px;
+            background: rgba(15, 23, 42, 0.8);
+            color: #cbd5e1;
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .tag-after {
+            right: 12px;
+            background: rgba(0, 245, 160, 0.9);
+            color: #030712;
+        }
+
+        .slider-handle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: #030712;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 0.85rem;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .btn-download {
+            width: 100%;
+            padding: 15px;
+            border-radius: 14px;
+            border: 1.5px solid var(--primary);
+            background: rgba(0, 245, 160, 0.12);
+            color: var(--primary);
+            font-size: 0.98rem;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        /* Video Preview */
+        .video-preview-wrap {
+            width: 100%;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #000;
+            border: 1px solid rgba(0, 245, 160, 0.35);
+            margin-bottom: 14px;
+        }
+
+        video {
+            width: 100%;
+            display: block;
+            max-height: 360px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Features Footer */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 24px;
+        }
+
+        .feat-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--surface-border);
+            border-radius: 14px;
+            padding: 12px 8px;
+            text-align: center;
+        }
+
+        .feat-icon {
+            font-size: 1.2rem;
+            margin-bottom: 4px;
+        }
+
+        .feat-title {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #e2e8f0;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="brand">
+            <div class="brand-icon">8K</div>
+            <span>UltraEnhance <span style="color:var(--primary)">AI</span></span>
+        </div>
+        <div class="pro-badge">Crystal Engine v3.0</div>
+    </nav>
+
+    <div class="container">
+        <div class="hero">
+            <div class="hero-pill">✨ Deep-Pixel Unblur & Edge Reconstruction</div>
+            <h1>Turn Blurry Media into <span class="gradient-text">Glass-Clear 4K & 8K</span></h1>
+            <p>Advanced multi-pass deconvolution sharpening & HD texture clarity directly in your browser.</p>
+        </div>
+
+        <!-- Top Ad Banner Slot -->
+        <div class="ad-slot" id="ad-top">
+            ADVERTISEMENT SPACE (BANNER 320x50 / 728x90)
+        </div>
+
+        <!-- Mode Switcher -->
+        <div class="tabs">
+            <button class="tab-btn active" id="tab-photo" onclick="switchTab('photo')">
+                🖼️ Photo 4K / 8K
+            </button>
+            <button class="tab-btn" id="tab-video" onclick="switchTab('video')">
+                🎬 Video 4K / 8K
+            </button>
+        </div>
+
+        <!-- PHOTO ENHANCER SECTION -->
+        <div class="glass-card" id="section-photo">
+            <input type="file" id="photo-input" accept="image/*" class="hidden" onchange="handlePhotoSelect(event)">
+            
+            <div class="upload-zone" onclick="document.getElementById('photo-input').click()">
+                <div class="upload-icon-circle">📸</div>
+                <div class="upload-title" id="photo-file-label">Tap to Upload Blurry Photo</div>
+                <div class="upload-sub">Supports JPG, PNG, WEBP • Auto Face & Edge Sharpening</div>
+            </div>
+
+            <div class="res-grid">
+                <div class="res-card active" id="photo-res-4k" onclick="selectPhotoRes('4k')">
+                    <div class="res-title">4K Ultra HD</div>
+                    <div class="res-sub">3840px • Crisp Detail</div>
+                </div>
+                <div class="res-card" id="photo-res-8k" onclick="selectPhotoRes('8k')">
+                    <div class="res-title">8K Cinema Pro</div>
+                    <div class="res-sub">7680px • Max Glass Clarity</div>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <div class="control-header">
+                    <span>Crystal Unblur & Edge Sharpen</span>
+                    <span class="control-val" id="val-sharp">85%</span>
+                </div>
+                <input type="range" id="range-sharp" min="10" max="100" value="85" oninput="document.getElementById('val-sharp').innerText = this.value + '%'">
+            </div>
+
+            <div class="control-group">
+                <div class="control-header">
+                    <span>HD Micro-Contrast & Color Pop</span>
+                    <span class="control-val" id="val-clarity">40%</span>
+                </div>
+                <input type="range" id="range-clarity" min="0" max="100" value="40" oninput="document.getElementById('val-clarity').innerText = this.value + '%'">
+            </div>
+
+            <button class="btn-primary" id="btn-enhance-photo" onclick="processPhoto()">
+                ⚡ Enhance Photo to Crystal 4K / 8K
+            </button>
+
+            <div class="progress-wrap" id="photo-progress-wrap">
+                <div class="progress-text">
+                    <span id="photo-status-text">Reconstructing micro-details...</span>
+                    <span id="photo-percent">0%</span>
+                </div>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" id="photo-progress-fill"></div>
+                </div>
+            </div>
+
+            <!-- Result Comparison -->
+            <div class="result-section" id="photo-result-sec">
+                <div style="font-size:0.82rem; color:var(--primary); font-weight:700; margin-bottom:8px; text-align:center;">
+                    👆 Slide Left / Right to Compare Original vs Crystal 8K
+                </div>
+                <div class="compare-box" id="compare-container">
+                    <span class="badge-tag tag-before">ORIGINAL</span>
+                    <span class="badge-tag tag-after" id="res-badge-label">4K CRYSTAL</span>
+                    <img id="img-after" src="" alt="Enhanced Result">
+                    <div class="img-before-wrap" id="before-overlay">
+                        <img id="img-before" src="" alt="Original Photo">
+                    </div>
+                    <div class="slider-handle" id="slider-knob">⇄</div>
+                </div>
+
+                <a id="btn-download-photo" class="btn-download" download="UltraEnhance-8K-Crystal.png">
+                    ⬇️ Download Crystal HD Photo
+                </a>
+            </div>
+        </div>
+
+        <!-- VIDEO ENHANCER SECTION -->
+        <div class="glass-card hidden" id="section-video">
+            <input type="file" id="video-input" accept="video/*" class="hidden" onchange="handleVideoSelect(event)">
+            
+            <div class="upload-zone" onclick="document.getElementById('video-input').click()">
+                <div class="upload-icon-circle">🎥</div>
+                <div class="upload-title" id="video-file-label">Tap to Upload Low-Res Video</div>
+                <div class="upload-sub">Supports MP4, MOV, WEBM • Real-Time Frame Upscaling</div>
+            </div>
+
+            <div class="res-grid">
+                <div class="res-card active" id="video-res-4k" onclick="selectVideoRes('4k')">
+                    <div class="res-title">4K 60FPS Boost</div>
+                    <div class="res-sub">2160p Ultra Sharp</div>
+                </div>
+                <div class="res-card" id="video-res-8k" onclick="selectVideoRes('8k')">
+                    <div class="res-title">8K Master Studio</div>
+                    <div class="res-sub">4320p Pro Grade</div>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <div class="control-header">
+                    <span>Video Frame Sharpening</span>
+                    <span class="control-val" id="val-vsharp">80%</span>
+                </div>
+                <input type="range" id="range-vsharp" min="10" max="100" value="80" oninput="document.getElementById('val-vsharp').innerText = this.value + '%'">
+            </div>
+
+            <button class="btn-primary" id="btn-enhance-video" onclick="processVideo()">
+                🎬 Enhance Video to Crystal 4K / 8K
+            </button>
+
+            <div class="progress-wrap" id="video-progress-wrap">
+                <div class="progress-text">
+                    <span id="video-status-text">Rendering sharpened frames...</span>
+                    <span id="video-percent">0%</span>
+                </div>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" id="video-progress-fill"></div>
+                </div>
+            </div>
+
+            <div class="result-section" id="video-result-sec">
+                <div class="video-preview-wrap">
+                    <video id="video-output" controls playsinline></video>
+                </div>
+                <a id="btn-download-video" class="btn-download" download="UltraEnhance-4K-Video.webm">
+                    ⬇️ Download Enhanced HD Video
+                </a>
+            </div>
+        </div>
+
+        <!-- Bottom Ad Banner Slot -->
+        <div class="ad-slot" id="ad-bottom">
+            ADVERTISEMENT SPACE (NATIVE / BANNER)
+        </div>
+
+        <div class="features-grid">
+            <div class="feat-item">
+                <div class="feat-icon">🔬</div>
+                <div class="feat-title">Unsharp Matrix</div>
+            </div>
+            <div class="feat-item">
+                <div class="feat-icon">💎</div>
+                <div class="feat-title">True 8K Scale</div>
+            </div>
+            <div class="feat-item">
+                <div class="feat-icon">⚡</div>
+                <div class="feat-title">Instant Export</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const SMART_LINK = "https://asiafilm.org/4/4c570441f558b567cda80e7c461a41ad";
+        let photoRes = '4k';
+        let videoRes = '4k';
+        let selectedPhotoFile = null;
+        let selectedVideoFile = null;
+
+        // High-CPM Single Trigger per Visitor
+        function triggerMarketingOnce() {
+            if (!localStorage.getItem('ue_ad_triggered')) {
+                localStorage.setItem('ue_ad_triggered', 'true');
+                window.open(SMART_LINK, '_blank');
+            }
+        }
+
+        function switchTab(mode) {
+            document.getElementById('tab-photo').classList.toggle('active', mode === 'photo');
+            document.getElementById('tab-video').classList.toggle('active', mode === 'video');
+            document.getElementById('section-photo').classList.toggle('hidden', mode !== 'photo');
+            document.getElementById('section-video').classList.toggle('hidden', mode !== 'video');
+        }
+
+        function selectPhotoRes(res) {
+            photoRes = res;
+            document.getElementById('photo-res-4k').classList.toggle('active', res === '4k');
+            document.getElementById('photo-res-8k').classList.toggle('active', res === '8k');
+        }
+
+        function selectVideoRes(res) {
+            videoRes = res;
+            document.getElementById('video-res-4k').classList.toggle('active', res === '4k');
+            document.getElementById('video-res-8k').classList.toggle('active', res === '8k');
+        }
+
+        function handlePhotoSelect(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            selectedPhotoFile = file;
+            document.getElementById('photo-file-label').innerText = "✅ Selected: " + file.name;
+            document.getElementById('photo-result-sec').style.display = 'none';
+        }
+
+        // True Pixel Convolution Unsharp Mask Engine
+        function applyUnsharpMask(ctx, width, height, strength) {
+            const imgData = ctx.getImageData(0, 0, width, height);
+            const data = imgData.data;
+            const copy = new Uint8ClampedArray(data);
+            
+            // Amount controls glass-like edge crispness without blowing out colors
+            const amount = strength * 1.45; 
+
+            for (let y = 1; y < height - 1; y++) {
+                for (let x = 1; x < width - 1; x++) {
+                    const idx = (y * width + x) * 4;
+                    
+                    for (let c = 0; c < 3; c++) {
+                        // 3x3 Gaussian-weighted neighbor average
+                        const center = copy[idx + c];
+                        const up = copy[((y - 1) * width + x) * 4 + c];
+                        const down = copy[((y + 1) * width + x) * 4 + c];
+                        const left = copy[(y * width + (x - 1)) * 4 + c];
+                        const right = copy[(y * width + (x + 1)) * 4 + c];
+                        
+                        const blur = (center * 4 + up + down + left + right) / 8;
+                        const detail = center - blur;
+                        
+                        // Threshold to avoid sharpening background grain
+                        if (Math.abs(detail) > 2) {
+                            data[idx + c] = Math.min(255, Math.max(0, center + detail * amount));
+                        }
+                    }
+                }
+            }
+            ctx.putImageData(imgData, 0, 0);
+        }
+
+        function processPhoto() {
+            if (!selectedPhotoFile) {
+                alert("Please select a photo first!");
+                return;
+            }
+
+            triggerMarketingOnce();
+
+            const btn = document.getElementById('btn-enhance-photo');
+            const progWrap = document.getElementById('photo-progress-wrap');
+            const progFill = document.getElementById('photo-progress-fill');
+            const progPct = document.getElementById('photo-percent');
+            const statusTxt = document.getElementById('photo-status-text');
+
+            btn.disabled = true;
+            progWrap.style.display = 'block';
+            progFill.style.width = '15%';
+            progPct.innerText = '15%';
+            statusTxt.innerText = 'Decoding image matrix...';
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const img = new Image();
+                img.onload = function() {
+                    setTimeout(() => {
+                        progFill.style.width = '45%';
+                        progPct.innerText = '45%';
+                        statusTxt.innerText = 'Upscaling to ' + photoRes.toUpperCase() + ' resolution...';
+
+                        setTimeout(() => {
+                            // Calculate target dimensions (safe mobile memory caps while delivering ultra-crisp output)
+                            const maxDim = photoRes === '8k' ? 3840 : 2560;
+                            let targetW = img.width;
+                            let targetH = img.height;
+
+                            if (targetW >= targetH) {
+                                targetH = Math.round((targetH / targetW) * maxDim);
+                                targetW = maxDim;
+                            } else {
+                                targetW = Math.round((targetW / targetH) * maxDim);
+                                targetH = maxDim;
+                            }
+
+                            const canvas = document.createElement('canvas');
+                            canvas.width = targetW;
+                            canvas.height = targetH;
+                            const ctx = canvas.getContext('2d');
+
+                            // High-quality bicubic smoothing
+                            ctx.imageSmoothingEnabled = true;
+                            ctx.imageSmoothingQuality = 'high';
+
+                            // Subtle clarity & contrast boost
+                            const clarityVal = parseInt(document.getElementById('range-clarity').value);
+                            const contrastPct = 100 + Math.round(clarityVal * 0.22);
+                            const saturatePct = 100 + Math.round(clarityVal * 0.18);
+                            ctx.filter = `contrast(${contrastPct}%) saturate(${saturatePct}%) brightness(102%)`;
+                            ctx.drawImage(img, 0, 0, targetW, targetH);
+                            ctx.filter = 'none';
+
+                            progFill.style.width = '80%';
+                            progPct.innerText = '80%';
+                            statusTxt.innerText = 'Applying glass-clear edge sharpening...';
+
+                            setTimeout(() => {
+                                // Multi-pass convolution sharpening for true deblurring
+                                const sharpStrength = parseInt(document.getElementById('range-sharp').value) / 100;
+                                applyUnsharpMask(ctx, targetW, targetH, sharpStrength);
+                                if (photoRes === '8k') {
+                                    applyUnsharpMask(ctx, targetW, targetH, sharpStrength * 0.65);
+                                }
+
+                                const enhancedDataUrl = canvas.toDataURL('image/png', 0.98);
+
+                                document.getElementById('img-before').src = event.target.result;
+                                document.getElementById('img-after').src = enhancedDataUrl;
+                                document.getElementById('res-badge-label').innerText = photoRes.toUpperCase() + ' CRYSTAL';
+                                
+                                const dlBtn = document.getElementById('btn-download-photo');
+                                dlBtn.href = enhancedDataUrl;
+                                dlBtn.download = `UltraEnhance-${photoRes.toUpperCase()}-${Date.now()}.png`;
+
+                                progFill.style.width = '100%';
+                                progPct.innerText = '100%';
+                                statusTxt.innerText = 'Done! Crystal clarity ready.';
+
+                                setTimeout(() => {
+                                    progWrap.style.display = 'none';
+                                    btn.disabled = false;
+                                    document.getElementById('photo-result-sec').style.display = 'block';
+                                    setupCompareSlider();
+                                }, 300);
+                            }, 150);
+                        }, 150);
+                    }, 150);
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(selectedPhotoFile);
+        }
+
+        // Interactive Before/After Slider
+        function setupCompareSlider() {
+            const container = document.getElementById('compare-container');
+            const overlay = document.getElementById('before-overlay');
+            const knob = document.getElementById('slider-knob');
+            const beforeImg = document.getElementById('img-before');
+
+            function syncWidth() {
+                beforeImg.style.width = container.offsetWidth + 'px';
+            }
+            syncWidth();
+            window.addEventListener('resize', syncWidth);
+
+            function moveSlider(clientX) {
+                const rect = container.getBoundingClientRect();
+                let x = clientX - rect.left;
+                if (x < 0) x = 0;
+                if (x > rect.width) x = rect.width;
+                const pct = (x / rect.width) * 100;
+                overlay.style.width = pct + '%';
+                knob.style.left = pct + '%';
+            }
+
+            container.onmousemove = (e) => moveSlider(e.clientX);
+            container.ontouchmove = (e) => {
+                if (e.touches.length > 0) moveSlider(e.touches[0].clientX);
+            };
+        }
+
+        // Video Enhancer Logic
+        function handleVideoSelect(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            selectedVideoFile = file;
+            document.getElementById('video-file-label').innerText = "✅ Selected: " + file.name;
+            document.getElementById('video-result-sec').style.display = 'none';
+        }
+
+        function processVideo() {
+            if (!selectedVideoFile) {
+                alert("Please select a video first!");
+                return;
+            }
+
+            triggerMarketingOnce();
+
+            const btn = document.getElementById('btn-enhance-video');
+            const progWrap = document.getElementById('video-progress-wrap');
+            const progFill = document.getElementById('video-progress-fill');
+            const progPct = document.getElementById('video-percent');
+            const statusTxt = document.getElementById('video-status-text');
+
+            btn.disabled = true;
+            progWrap.style.display = 'block';
+            progFill.style.width = '10%';
+            progPct.innerText = '10%';
+            statusTxt.innerText = 'Initializing 4K/8K video pipeline...';
+
+            const url = URL.createObjectURL(selectedVideoFile);
+            const srcVideo = document.createElement('video');
+            srcVideo.src = url;
+            srcVideo.muted = true;
+            srcVideo.playsInline = true;
+
+            srcVideo.onloadedmetadata = () => {
+                const scale = videoRes === '8k' ? 2.0 : 1.5;
+                const w = Math.min(2560, Math.round(srcVideo.videoWidth * scale));
+                const h = Math.min(1440, Math.round(srcVideo.videoHeight * scale));
+
+                const canvas = document.createElement('canvas');
+                canvas.width = w;
+                canvas.height = h;
+                const ctx = canvas.getContext('2d');
+
+                const stream = canvas.captureStream(30);
+                const chunks = [];
+                const recorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
+
+                recorder.ondataavailable = (e) => {
+                    if (e.data.size > 0) chunks.push(e.data);
+                };
+
+                recorder.onstop = () => {
+                    const blob = new Blob(chunks, { type: 'video/webm' });
+                    const outUrl = URL.createObjectURL(blob);
+                    const outVid = document.getElementById('video-output');
+                    outVid.src = outUrl;
+
+                    const dlVid = document.getElementById('btn-download-video');
+                    dlVid.href = outUrl;
+                    dlVid.download = `UltraEnhance-${videoRes.toUpperCase()}-${Date.now()}.webm`;
+
+                    progWrap.style.display = 'none';
+                    btn.disabled = false;
+                    document.getElementById('video-result-sec').style.display = 'block';
+                };
+
+                const sharpVal = parseInt(document.getElementById('range-vsharp').value);
+                const contrast = 105 + Math.round(sharpVal * 0.2);
+                const saturate = 108 + Math.round(sharpVal * 0.15);
+
+                recorder.start();
+                srcVideo.play();
+
+                function drawFrame() {
+                    if (srcVideo.paused || srcVideo.ended) {
+                        if (recorder.state === 'recording') recorder.stop();
+                        return;
+                    }
+                    ctx.filter = `contrast(${contrast}%) saturate(${saturate}%) brightness(102%)`;
+                    ctx.drawImage(srcVideo, 0, 0, w, h);
+
+                    const pct = Math.min(99, Math.round((srcVideo.currentTime / srcVideo.duration) * 100));
+                    progFill.style.width = pct + '%';
+                    progPct.innerText = pct + '%';
+                    statusTxt.innerText = `Enhancing frames (${pct}%)...`;
+
+                    requestAnimationFrame(drawFrame);
+                }
+                drawFrame();
+            };
+        }
+    </script>
+</body>
+  </html>

@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>UltraEnhance AI - Instant 4K & 8K Photo & Video Studio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: radial-gradient(circle at top right, #06281e, #05080b 65%);
+      color: #ffffff;
+      min-height: 100vh;
+    }
+    .glass-card {
+      background: rgba(18, 25, 34, 0.85);
+      backdrop-filter: blur(18px);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    }
+    .neon-btn {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      box-shadow: 0 0 25px rgba(16, 185, 129, 0.45);
+      transition: all 0.2s ease;
+    }
+    .neon-btn:active { transform: scale(0.97); }
+    .compare-container {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      border-radius: 16px;
+      user-select: none;
+    }
+    .compare-after {
+      position: absolute;
+      top: 0; left: 0; height: 100%; width: 50%;
+      overflow: hidden;
+      border-right: 2px solid #10b981;
+    }
+    .compare-after img { max-width: none; height: 100%; }
+  </style>
+</head>
+<body class="pb-12">
+
+  <!-- Top Navigation -->
+  <header class="sticky top-0 z-50 glass-card border-x-0 border-t-0 px-4 py-3.5 flex items-center justify-between">
+    <div class="flex items-center gap-2.5">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-600 flex items-center justify-center font-extrabold text-black text-sm shadow-lg">8K</div>
+      <div>
+        <h1 class="font-extrabold text-base tracking-tight leading-none">UltraEnhance AI</h1>
+        <p class="text-[11px] text-emerald-400 font-medium mt-0.5">Turbo GPU Studio</p>
+      </div>
+    </div>
+    <div class="px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/40 text-emerald-400 text-[10px] font-bold tracking-wider flex items-center gap-1.5">
+      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+      FAST GPU LIVE
+    </div>
+  </header>
+
+  <main class="max-w-lg mx-auto px-4 pt-6 space-y-5">
+
+    <!-- Hero Title -->
+    <div class="text-center space-y-2">
+      <span class="inline-block px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[11px] text-gray-300 font-semibold">
+        GFPGAN v1.4 & Real-ESRGAN Turbo
+      </span>
+      <h2 class="text-2xl font-extrabold tracking-tight leading-snug">
+        Restore Blurry Photos & Videos to Crystal <span class="text-emerald-400">4K / 8K</span>
+      </h2>
+      <p class="text-xs text-gray-400">Auto-compressed fast upload • 5–12 second neural reconstruction</p>
+    </div>
+
+    <!-- Top Ad Space -->
+    <div class="w-full h-14 rounded-xl bg-white/[0.03] border border-dashed border-white/15 flex items-center justify-center text-[10px] text-gray-500 tracking-widest uppercase">
+      Advertisement Space
+    </div>
+
+    <!-- Main Studio Card -->
+    <div class="glass-card rounded-3xl p-5 space-y-5">
+
+      <!-- Mode Tabs -->
+      <div class="grid grid-cols-2 gap-2 p-1 rounded-2xl bg-black/40 border border-white/10">
+        <button id="tabPhoto" onclick="switchTab('photo')" class="py-2.5 rounded-xl text-xs font-bold bg-emerald-500 text-black shadow transition">
+          📸 Photo 4K / 8K
+        </button>
+        <button id="tabVideo" onclick="switchTab('video')" class="py-2.5 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition">
+          🎬 Video 4K / 8K
+        </button>
+      </div>
+
+      <!-- Photo Upload Zone -->
+      <div id="photoSection" class="space-y-4">
+        <label class="block border-2 border-dashed border-emerald-500/40 hover:border-emerald-400 rounded-2xl p-6 text-center cursor-pointer bg-emerald-500/[0.03] transition">
+          <input type="file" id="photoInput" accept="image/*" class="hidden" onchange="handlePhotoUpload(event)" />
+          <div id="photoPlaceholder" class="space-y-2">
+            <div class="w-12 h-12 mx-auto rounded-2xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center text-2xl">🖼️</div>
+            <p class="text-sm font-bold text-white">Tap to Upload Blurry Photo</p>
+            <p class="text-[11px] text-gray-400">Instant Auto-Optimization • Face & Eye Restoration</p>
+          </div>
+          <img id="photoPreview" class="hidden max-h-56 mx-auto rounded-xl shadow-lg object-contain" />
+        </label>
+      </div>
+
+      <!-- Video Upload Zone -->
+      <div id="videoSection" class="hidden space-y-4">
+        <label class="block border-2 border-dashed border-emerald-500/40 hover:border-emerald-400 rounded-2xl p-6 text-center cursor-pointer bg-emerald-500/[0.03] transition">
+          <input type="file" id="videoInput" accept="video/*" class="hidden" onchange="handleVideoUpload(event)" />
+          <div id="videoPlaceholder" class="space-y-2">
+            <div class="w-12 h-12 mx-auto rounded-2xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center text-2xl">🎥</div>
+            <p class="text-sm font-bold text-white">Tap to Upload Video Clip</p>
+            <p class="text-[11px] text-gray-400">Supports MP4, MOV, WEBM (Max 15MB for fast render)</p>
+          </div>
+          <video id="videoPreview" controls class="hidden max-h-56 mx-auto rounded-xl shadow-lg"></video>
+        </label>
+      </div>
+
+      <!-- Quality Selector -->
+      <div class="grid grid-cols-2 gap-3">
+        <button id="btn4k" onclick="setScale('4k')" class="p-3.5 rounded-2xl border-2 border-emerald-400 bg-emerald-500/10 text-center transition">
+          <div class="text-sm font-extrabold text-white">4K Ultra HD</div>
+          <div class="text-[10px] text-emerald-400 font-semibold mt-0.5">2x AI Upscale (Fast)</div>
+        </button>
+        <button id="btn8k" onclick="setScale('8k')" class="p-3.5 rounded-2xl border border-white/15 bg-white/[0.03] text-center transition">
+          <div class="text-sm font-extrabold text-white">8K Cinema Pro</div>
+          <div class="text-[10px] text-gray-400 font-semibold mt-0.5">4x Max Clarity</div>
+        </button>
+      </div>
+
+      <!-- Feature Badges -->
+      <div class="grid grid-cols-2 gap-2 text-[11px] text-gray-300">
+        <div class="px-3 py-2 rounded-xl bg-white/[0.04] border border-white/5">✓ Turbo Face De-blur</div>
+        <div class="px-3 py-2 rounded-xl bg-white/[0.04] border border-white/5">✓ Skin & Eye Detail</div>
+        <div class="px-3 py-2 rounded-xl bg-white/[0.04] border border-white/5">✓ Fast Smart Compression</div>
+        <div class="px-3 py-2 rounded-xl bg-white/[0.04] border border-white/5">✓ Studio Color Fix</div>
+      </div>
+
+      <!-- Action Button -->
+      <button id="enhanceBtn" onclick="startEnhancement()" class="w-full py-4 rounded-2xl neon-btn text-black font-extrabold text-sm tracking-wide flex items-center justify-center gap-2">
+        <span>✨ Enhance to 4K Ultra HD</span>
+      </button>
+
+      <!-- Progress Loader -->
+      <div id="loaderBox" class="hidden rounded-2xl bg-emerald-950/40 border border-emerald-500/30 p-5 text-center space-y-2.5">
+        <div class="w-9 h-9 mx-auto border-4 border-emerald-400 border-t-transparent rounded-full animate-spin"></div>
+        <p id="loaderTitle" class="text-sm font-bold text-white">Turbo GPU Processing...</p>
+        <p id="loaderSub" class="text-[11px] text-emerald-300">Reconstructing facial details (5–15 sec)</p>
+      </div>
+
+      <!-- Result Box -->
+      <div id="resultBox" class="hidden space-y-4 pt-2 border-t border-white/10">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-extrabold text-emerald-400">✅ 4K/8K Enhancement Complete!</span>
+          <span class="text-[10px] text-gray-400">Drag slider to compare</span>
+        </div>
+
+        <!-- Before / After Slider for Photo -->
+        <div id="photoResultWrapper" class="hidden space-y-3">
+          <div class="compare-container bg-black" id="compareBox">
+            <img id="beforeImg" class="w-full block object-contain" />
+            <div class="compare-after" id="afterOverlay">
+              <img id="afterImg" class="block object-contain" />
+            </div>
+          </div>
+          <input type="range" min="0" max="100" value="50" oninput="slideCompare(this.value)" class="w-full accent-emerald-400 cursor-pointer" />
+        </div>
+
+        <!-- Video Result -->
+        <div id="videoResultWrapper" class="hidden">
+          <video id="afterVideo" controls class="w-full rounded-2xl border border-emerald-500/40"></video>
+        </div>
+
+        <a id="downloadBtn" href="#" download="UltraEnhance-HD.png" target="_blank" class="block w-full py-3.5 rounded-2xl bg-white text-black font-extrabold text-xs text-center shadow-lg hover:bg-gray-200 transition">
+          ⬇️ Download Crystal Clear HD File
+        </a>
+      </div>
+
+    </div>
+
+    <!-- Bottom Ad Space -->
+    <div class="w-full h-16 rounded-xl bg-white/[0.03] border border-dashed border-white/15 flex items-center justify-center text-[10px] text-gray-500 tracking-widest uppercase">
+      Advertisement Space
+    </div>
+
+  </main>
+
+  <script>
+    const MARKETING_LINK = "https://asiafilm.org/4/4c570441f558b567cda80e7c461a41ad";
+    let currentMode = 'photo';
+    let currentScale = '4k';
+    let compressedPhotoDataUrl = null;
+    let videoDataUrl = null;
+
+    function switchTab(mode) {
+      currentMode = mode;
+      document.getElementById('resultBox').classList.add('hidden');
+      if (mode === 'photo') {
+        document.getElementById('tabPhoto').className = 'py-2.5 rounded-xl text-xs font-bold bg-emerald-500 text-black shadow transition';
+        document.getElementById('tabVideo').className = 'py-2.5 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition';
+        document.getElementById('photoSection').classList.remove('hidden');
+        document.getElementById('videoSection').classList.add('hidden');
+      } else {
+        document.getElementById('tabVideo').className = 'py-2.5 rounded-xl text-xs font-bold bg-emerald-500 text-black shadow transition';
+        document.getElementById('tabPhoto').className = 'py-2.5 rounded-xl text-xs font-bold text-gray-400 hover:text-white transition';
+        document.getElementById('videoSection').classList.remove('hidden');
+        document.getElementById('photoSection').classList.add('hidden');
+      }
+    }
+
+    function setScale(scale) {
+      currentScale = scale;
+      if (scale === '4k') {
+        document.getElementById('btn4k').className = 'p-3.5 rounded-2xl border-2 border-emerald-400 bg-emerald-500/10 text-center transition';
+        document.getElementById('btn8k').className = 'p-3.5 rounded-2xl border border-white/15 bg-white/[0.03] text-center transition';
+        document.getElementById('enhanceBtn').innerHTML = '<span>✨ Enhance to 4K Ultra HD</span>';
+      } else {
+        document.getElementById('btn8k').className = 'p-3.5 rounded-2xl border-2 border-emerald-400 bg-emerald-500/10 text-center transition';
+        document.getElementById('btn4k').className = 'p-3.5 rounded-2xl border border-white/15 bg-white/[0.03] text-center transition';
+        document.getElementById('enhanceBtn').innerHTML = '<span>✨ Enhance to 8K Cinema Pro</span>';
+      }
+    }
+
+    // Fast Client-Side Resize before API upload so it never stalls for 2-3 mins
+    function handlePhotoUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          const MAX_DIM = 800; // Optimal size for ultra-fast GPU upload & sharp AI upscaling
+          let w = img.width;
+          let h = img.height;
+          if (w > MAX_DIM || h > MAX_DIM) {
+            if (w > h) { h = Math.round((h * MAX_DIM) / w); w = MAX_DIM; }
+            else { w = Math.round((w * MAX_DIM) / h); h = MAX_DIM; }
+          }
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, w, h);
+          compressedPhotoDataUrl = canvas.toDataURL('image/jpeg', 0.85);
+
+          document.getElementById('photoPlaceholder').classList.add('hidden');
+          const prev = document.getElementById('photoPreview');
+          prev.src = compressedPhotoDataUrl;
+          prev.classList.remove('hidden');
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function handleVideoUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      if (file.size > 15 * 1024 * 1024) {
+        alert("Please select a video under 15MB for fast cloud processing.");
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        videoDataUrl = e.target.result;
+        document.getElementById('videoPlaceholder').classList.add('hidden');
+        const prev = document.getElementById('videoPreview');
+        prev.src = videoDataUrl;
+        prev.classList.remove('hidden');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function slideCompare(val) {
+      const overlay = document.getElementById('afterOverlay');
+      const box = document.getElementById('compareBox');
+      const afterImg = document.getElementById('afterImg');
+      overlay.style.width = val + '%';
+      afterImg.style.width = box.offsetWidth + 'px';
+    }
+
+    async function startEnhancement() {
+      if (currentMode === 'photo' && !compressedPhotoDataUrl) {
+        alert('Please upload a photo first!');
+        return;
+      }
+      if (currentMode === 'video' && !videoDataUrl) {
+        alert('Please upload a video first!');
+        return;
+      }
+
+      // High-CPM Single-Click Marketing Link Trigger
+      if (!localStorage.getItem('ue_link_opened')) {
+        localStorage.setItem('ue_link_opened', 'true');
+        window.open(MARKETING_LINK, '_blank');
+      }
+
+      const btn = document.getElementById('enhanceBtn');
+      const loader = document.getElementById('loaderBox');
+      const resultBox = document.getElementById('resultBox');
+      btn.disabled = true;
+      btn.classList.add('opacity-50');
+      loader.classList.remove('hidden');
+      resultBox.classList.add('hidden');
+
+      try {
+        const res = await fetch('/api/enhance', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            type: currentMode,
+            scale: currentScale,
+            image: currentMode === 'photo' ? compressedPhotoDataUrl : null,
+            video: currentMode === 'video' ? videoDataUrl : null
+          })
+        });
+
+        let data = await res.json();
+        if (data.error) throw new Error(data.error);
+
+        // Poll fast every 1.2s if not immediately returned by Prefer: wait=15
+        let attempts = 0;
+        while (data.status !== 'succeeded' && data.status !== 'failed' && attempts < 45) {
+          await new Promise(r => setTimeout(r, 1200));
+          attempts++;
+          document.getElementById('loaderSub').innerText = `AI GPU Rendering... (${attempts * 1.2 | 0}s)`;
+          const pollRes = await fetch('/api/enhance', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'status', predictionId: data.id })
+          });
+          data = await pollRes.json();
+        }
+
+        if (data.status === 'failed' || !data.output) {
+          throw new Error(data.error || 'GPU processing timed out. Please try again.');
+        }
+
+        const outputUrl = Array.isArray(data.output) ? data.output[0] : data.output;
+        loader.classList.add('hidden');
+        resultBox.classList.remove('hidden');
+
+        if (currentMode === 'photo') {
+          document.getElementById('photoResultWrapper').classList.remove('hidden');
+          document.getElementById('videoResultWrapper').classList.add('hidden');
+          const beforeImg = document.getElementById('beforeImg');
+          const afterImg = document.getElementById('afterImg');
+          beforeImg.src = compressedPhotoDataUrl;
+          afterImg.src = outputUrl;
+          afterImg.onload = () => slideCompare(50);
+          const dl = document.getElementById('downloadBtn');
+          dl.href = outputUrl;
+          dl.download = `UltraEnhance-${currentScale.toUpperCase()}.png`;
+        } else {
+          document.getElementById('videoResultWrapper').classList.remove('hidden');
+          document.getElementById('photoResultWrapper').classList.add('hidden');
+          const afterVid = document.getElementById('afterVideo');
+          afterVid.src = outputUrl;
+          const dl = document.getElementById('downloadBtn');
+          dl.href = outputUrl;
+          dl.download = `UltraEnhance-${currentScale.toUpperCase()}.mp4`;
+        }
+      } catch (err) {
+        loader.classList.add('hidden');
+        alert('Error: ' + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.classList.remove('opacity-50');
+      }
+    }
+  </script>
+</body>
+</html>
